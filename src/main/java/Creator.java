@@ -9,20 +9,20 @@ public class Creator {
     private static final String filename = "expenses.json";
     private FileWriter fileWriter;
 
+
     public void createJsonFile(JSONArray jsonArray) throws IOException {
         JSONObject main = new JSONObject();
-        main.put("expenses",jsonArray);
+        main.put("expenses", jsonArray);
         try {
             fileWriter = new FileWriter(filename);
             fileWriter.write(main.toString());
             fileWriter.flush();
         } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             fileWriter.close();
         }
     }
-
 
 
     public JSONObject createRaw(String date, double amount, String currency, String product) {

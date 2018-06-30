@@ -18,32 +18,32 @@ public class Manager {
         this.creator = creator;
     }
 
-    public void addExpense(String date, double amount, String currency, String product){
+    public void addExpense(String date, double amount, String currency, String product) {
         expenses = new JSONArray();
-        try{
-            if (new File(filename).exists()){
+        try {
+            if (new File(filename).exists()) {
                 expenses = getArray();
-                expenses.add(creator.createRaw(date, amount, currency,product));
+                expenses.add(creator.createRaw(date, amount, currency, product));
                 creator.createJsonFile(expenses);
-            }else {
-                expenses.add(creator.createRaw(date, amount, currency,product));
+            } else {
+                expenses.add(creator.createRaw(date, amount, currency, product));
                 creator.createJsonFile(expenses);
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error !");
         }
     }
 
-    public void deleteExpenseByDate(String date){
+    public void deleteExpenseByDate(String date) {
         JSONArray jsonArray = new JSONArray();
         boolean check = false;
         expenses = getArray();
         JSONObject object;
         for (int i = 0; i < expenses.size(); i++) {
             object = (JSONObject) expenses.get(i);
-            if (!object.get("date").equals(date)){
+            if (!object.get("date").equals(date)) {
                 jsonArray.add(object);
-            }else {
+            } else {
                 check = true;
             }
         }
@@ -57,7 +57,7 @@ public class Manager {
         }
     }
 
-    private JSONArray getArray(){
+    private JSONArray getArray() {
         JSONArray array = new JSONArray();
         JSONParser jsonParser = new JSONParser();
         try {
@@ -66,7 +66,7 @@ public class Manager {
                 jsObj = (JSONObject) jsonParser.parse(fileReader);
                 array = (JSONArray) jsObj.get("expenses");
             }
-        }catch (IOException | ParseException e){
+        } catch (IOException | ParseException e) {
             System.out.println("Error !");
         }
         return array;
