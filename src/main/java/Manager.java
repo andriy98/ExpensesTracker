@@ -12,8 +12,6 @@ public class Manager {
     private Creator creator;
     private JSONObject jsObj;
     private JSONArray expenses;
-    private FileReader fileReader;
-    private JSONParser jsonParser;
 
 
     public Manager(Creator creator) {
@@ -61,17 +59,16 @@ public class Manager {
 
     private JSONArray getArray(){
         JSONArray array = new JSONArray();
+        JSONParser jsonParser = new JSONParser();
         try {
+            FileReader fileReader = new FileReader(filename);
             if (new File(filename).exists()) {
-                fileReader = new FileReader(filename);
-                jsonParser = new JSONParser();
                 jsObj = (JSONObject) jsonParser.parse(fileReader);
                 array = (JSONArray) jsObj.get("expenses");
             }
         }catch (IOException | ParseException e){
-
+            System.out.println("Error !");
         }
         return array;
     }
-
 }
