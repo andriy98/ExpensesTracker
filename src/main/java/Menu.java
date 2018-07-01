@@ -65,7 +65,6 @@ public class Menu {
                                     double amount = Double.parseDouble(values[2]);
                                     String currency = values[3];
                                     String name = values[4];
-                                    System.out.println(name.matches("(.*)\""));
                                     if (name.charAt(0) == '“' || name.charAt(0) == '"') {
                                         name = "";
                                         for (int i = 4; i < values.length; i++) {
