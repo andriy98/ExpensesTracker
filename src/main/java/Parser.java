@@ -11,20 +11,34 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 
+/**
+ * Parser is the class which allows to print expenses list from file and
+ * get all currencies from list
+ *
+ * @author Andrii
+ */
+
 public class Parser {
 
     private static final String fileName = "expenses.json";
     private JSONArray expenses;
     private JSONObject raw;
 
+    /**
+     * getList() is the method to print expenses list
+     *
+     * @throws IOException    if error while processing the file
+     * @throws ParseException if error while parsing rows from file
+     */
+
     public void getList() throws IOException, ParseException {
-        if (new File(fileName).exists()){
+        if (new File(fileName).exists()) {
             FileReader fileReader = new FileReader(fileName);
             JSONParser jsonParser = new JSONParser();
             HashSet<String> dates = new HashSet<String>();
             JSONObject fileContent = (JSONObject) jsonParser.parse(fileReader);
             expenses = (JSONArray) fileContent.get("expenses");
-            if (expenses.size()>0){
+            if (expenses.size() > 0) {
                 Collections.sort(expenses, (Comparator<JSONObject>) (obj1, obj2) -> {
                     String date1 = String.valueOf(obj1.get("date"));
                     String date2 = String.valueOf(obj2.get("date"));
@@ -46,41 +60,51 @@ public class Parser {
                         System.out.println();
                     }
                 }
-            }else {
+            } else {
                 System.out.println("Your expenses list is empty !");
             }
-        }else {
+        } else {
             System.out.println("Your expenses list is empty !");
         }
     }
+
+    /**
+     * getCurrencies() is the method to get name and value of every currency from expenses list
+     *
+     * @return currencies HashMap which contains key - name of currency;
+     * value - value for this currency to exchange
+     * @throws IOException    if error while getting all currencies from file
+     * @throws ParseException if error while parsing rows from file
+     */
 
     public HashMap<String, Double> getCurrencies() throws IOException, ParseException {
         expenses = new JSONArray();
         double old;
         String currency;
         HashMap<String, Double> currencies = new HashMap<>();
-        if (new File(fileName).exists()){
+        if (new File(fileName).exists()) {
             FileReader fileReader = new FileReader(fileName);
             JSONParser jsonParser = new JSONParser();
             JSONObject fileContent = (JSONObject) jsonParser.parse(fileReader);
             expenses = (JSONArray) fileContent.get("expenses");
-            if (expenses.size()>0){
+            if (expenses.size() > 0) {
                 for (int i = 0; i < expenses.size(); i++) {
                     raw = (JSONObject) expenses.get(i);
                     currency = String.valueOf(raw.get("currency"));
-                    if (currencies.keySet().contains(currency)){
+                    if (currencies.keySet().contains(currency)) {
                         old = currencies.get(currency);
-                        currencies.replace(currency,old, old+ (Double) raw.get("amount"));
-                    }else {
-                        currencies.put(currency,(Double) raw.get("amount"));
+                        currencies.replace(currency, old, old + (Double) raw.get("amount"));
+                    } else {
+                        currencies.put(currency, (Double) raw.get("amount"));
                     }
                 }
-            }else {
+            } else {
                 System.out.println("Your expenses list is empty !");
             }
-        }else {
+        } else {
             System.out.println("Your expenses list is empty !");
         }
         return currencies;
     }
+
 }

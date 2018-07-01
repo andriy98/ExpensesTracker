@@ -6,17 +6,33 @@ import java.text.SimpleDateFormat;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
+/**
+ * Menu is the class which prints menu, reads commands, checks this commands for correctness,
+ * and prints the results
+ *
+ * @author Andrii
+ */
 public class Menu {
     private Manager manager;
     private Parser parser;
     private Exchanger exchanger;
 
+    /**
+     * Creates a new Menu object with given parameters
+     *
+     * @param manager   object which allows to change expenses list
+     * @param parser    object which allows to read expenses list
+     * @param exchanger object which allows to exchange all currencies from list to one currency
+     */
     public Menu(Manager manager, Parser parser, Exchanger exchanger) {
         this.manager = manager;
         this.parser = parser;
         this.exchanger = exchanger;
     }
 
+    /**
+     * showMenu() is the method which read entered command and print the results of this command
+     */
     public void showMenu() {
         System.out.println("Type your command here (to watch all enabled commands - use command help)");
         Scanner scanner = new Scanner(System.in);
@@ -49,6 +65,14 @@ public class Menu {
                                     double amount = Double.parseDouble(values[2]);
                                     String currency = values[3];
                                     String name = values[4];
+                                    System.out.println(name.matches("(.*)\""));
+                                    if (name.charAt(0) == '“' || name.charAt(0) == '"') {
+                                        name = "";
+                                        for (int i = 4; i < values.length; i++) {
+                                            name = name + values[i] + " ";
+                                        }
+                                        name = name.trim();
+                                    }
                                     manager.addExpense(date, amount, currency, name);
                                     parser.getList();
                                 }
@@ -86,10 +110,16 @@ public class Menu {
         }
     }
 
-    private static boolean isLegalDate(String s) {
+    /**
+     * isLegalDate(String date) is the method which check entered date
+     *
+     * @param date String entered date, which we checked for correctness
+     * @return boolean true - if date is correct; false - if entered date is incorrect
+     */
+    private static boolean isLegalDate(String date) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
-        return sdf.parse(s, new ParsePosition(0)) != null;
+        return sdf.parse(date, new ParsePosition(0)) != null;
     }
 
 }

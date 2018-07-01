@@ -7,26 +7,44 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
+/**
+ * Manager is the class which allows to add expenses to list and remove expenses from list by date
+ *
+ * @author Andrii
+ */
 public class Manager {
     private static final String filename = "expenses.json";
     private Creator creator;
     private JSONObject jsObj;
     private JSONArray expenses;
 
-
+    /**
+     * Creates Manager object with given parameters
+     *
+     * @param creator object which allows to create file of expenses
+     */
     public Manager(Creator creator) {
         this.creator = creator;
     }
 
+    /**
+     * addExpense(String date, double amount, String currency, String product) is the method which
+     * allows to add expense to expenses list
+     *
+     * @param date     String date of the expense creation
+     * @param amount   double amount of the expense
+     * @param currency String currency of the expense
+     * @param product  String product name of the expense
+     */
     public void addExpense(String date, double amount, String currency, String product) {
         expenses = new JSONArray();
         try {
             if (new File(filename).exists()) {
                 expenses = getArray();
-                expenses.add(creator.createRaw(date, amount, currency, product));
+                expenses.add(creator.createRow(date, amount, currency, product));
                 creator.createJsonFile(expenses);
             } else {
-                expenses.add(creator.createRaw(date, amount, currency, product));
+                expenses.add(creator.createRow(date, amount, currency, product));
                 creator.createJsonFile(expenses);
             }
         } catch (IOException e) {
@@ -34,6 +52,11 @@ public class Manager {
         }
     }
 
+    /**
+     * deleteExpenseByDate(String date) is the method which allows delete expense of entered date from the list
+     *
+     * @param date String date of the expense creation
+     */
     public void deleteExpenseByDate(String date) {
         JSONArray jsonArray = new JSONArray();
         boolean check = false;
@@ -57,6 +80,11 @@ public class Manager {
         }
     }
 
+    /**
+     * getArray() is the method which allows to get array of expenses from file
+     *
+     * @return array JSONArray array of expenses from file
+     */
     private JSONArray getArray() {
         JSONArray array = new JSONArray();
         JSONParser jsonParser = new JSONParser();
