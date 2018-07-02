@@ -34,7 +34,7 @@ public class Menu {
      * showMenu() is the method which read entered command and print the results of this command
      */
     public void showMenu() {
-        System.out.println("Type your command here (to watch all enabled commands - use command help)");
+        System.out.println("Type your command here (to watch all available commands - use command help)");
         Scanner scanner = new Scanner(System.in);
         Pattern pattern = Pattern.compile(" ");
         try {
@@ -83,7 +83,7 @@ public class Menu {
                         case "clear":
                             if (values.length < 2) {
                                 System.out.println("Invalid \"clear\" command !");
-                                System.out.println("Syntax: \"clear [date(\"yyyy-mm-dd\")]");
+                                System.out.println("Syntax: clear [date(\"yyyy-mm-dd\")]");
                             } else {
                                 date = values[1];
                                 if (!isLegalDate(date)) {
@@ -97,10 +97,13 @@ public class Menu {
                         case "total":
                             exchanger.exchange();
                             break;
+                        case "help":
+                            showHelp();
+                            break;
                         case "exit":
                             System.exit(0);
                         default:
-                            System.out.println("Invalid command !\nUse help to watch all enabled commands !");
+                            System.out.println("Invalid command !\nUse help to watch all available commands !");
                     }
                 }
             }
@@ -119,6 +122,20 @@ public class Menu {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         sdf.setLenient(false);
         return sdf.parse(date, new ParsePosition(0)) != null;
+    }
+
+    private void showHelp() {
+        System.out.println("Available commands:" +
+                "\n1. add - adds expense entry to the list of user expenses ;" +
+                "\nSyntax: add [date(\"yyyy-mm-dd\")] [amount_of_money] [currency] [name_of_product]" +
+                "\n2. list - shows the list of all expenses sorted by date ;" +
+                "\nSyntax: list" +
+                "\n3. clear - removes all expenses for specified date ;" +
+                "\nSyntax: clear [date(\"yyyy-mm-dd\")]" +
+                "\n4. total - calculates the total amount of money spent and present it to user in specified currency ;" +
+                "\nSyntax: total [currency]" +
+                "\n5. exit - closes the application ;" +
+                "\nSyntax: exit\n");
     }
 
 }
