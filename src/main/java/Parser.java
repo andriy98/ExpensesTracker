@@ -25,13 +25,13 @@ public class Parser {
     private JSONObject raw;
 
     /**
-     * getList() is the method to print expenses list
+     * printList() is the method to print expenses list
      *
      * @throws IOException    if error while processing the file
      * @throws ParseException if error while parsing rows from file
      */
 
-    public void getList() throws IOException, ParseException {
+    public void printList() throws IOException, ParseException {
         if (new File(fileName).exists()) {
             FileReader fileReader = new FileReader(fileName);
             JSONParser jsonParser = new JSONParser();
@@ -69,7 +69,7 @@ public class Parser {
     }
 
     /**
-     * getCurrencies() is the method to get name and value of every currency from expenses list
+     * getCurrenciesFromList() is the method to get name and value of every currency from expenses list
      *
      * @return currencies HashMap which contains key - name of currency;
      * value - value for this currency to exchange
@@ -77,7 +77,7 @@ public class Parser {
      * @throws ParseException if error while parsing rows from file
      */
 
-    public HashMap<String, Double> getCurrencies() throws IOException, ParseException {
+    public HashMap<String, Double> getCurrenciesFromList() throws IOException, ParseException {
         expenses = new JSONArray();
         double old;
         String currency;

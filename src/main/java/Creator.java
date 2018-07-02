@@ -1,8 +1,10 @@
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashSet;
 
 /**
  * Creator is the class which allows to create separate row and file of expenses
@@ -17,9 +19,10 @@ public class Creator {
      * createJsonFile(JSONArray jsonArray) is the method which allows to create file to store array of expenses
      *
      * @param jsonArray JSONArray array of expenses which we write to file
+     * @return boolean true - if file was successfully created
      * @throws IOException if error while writing to the file
      */
-    public void createJsonFile(JSONArray jsonArray) throws IOException {
+    public boolean createJsonFile(JSONArray jsonArray) throws IOException {
         JSONObject main = new JSONObject();
         main.put("expenses", jsonArray);
         try {
@@ -31,6 +34,7 @@ public class Creator {
         } finally {
             fileWriter.close();
         }
+        return new File(filename).exists();
     }
 
     /**

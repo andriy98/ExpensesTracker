@@ -35,29 +35,33 @@ public class Manager {
      * @param amount   double amount of the expense
      * @param currency String currency of the expense
      * @param product  String product name of the expense
+     * @return boolean true if expense was successfully added
      */
-    public void addExpense(String date, double amount, String currency, String product) {
+    public boolean addExpense(String date, double amount, String currency, String product) {
         expenses = new JSONArray();
+        JSONObject newRecord;
+        newRecord = creator.createRow(date, amount, currency, product);
         try {
             if (new File(filename).exists()) {
                 expenses = getArray();
-                expenses.add(creator.createRow(date, amount, currency, product));
-                creator.createJsonFile(expenses);
+                expenses.add(newRecord);
             } else {
-                expenses.add(creator.createRow(date, amount, currency, product));
-                creator.createJsonFile(expenses);
+                expenses.add(newRecord);
             }
+            creator.createJsonFile(expenses);
         } catch (IOException e) {
-            System.out.println("Error !");
+            System.out.println("Error w !");
         }
+        return expenses.contains(newRecord);
     }
 
     /**
      * deleteExpenseByDate(String date) is the method which allows delete expense of entered date from the list
      *
      * @param date String date of the expense creation
+     * @return boolean true - if expense was successfully deleted
      */
-    public void deleteExpenseByDate(String date) {
+    public boolean deleteExpenseByDate(String date) {
         JSONArray jsonArray = new JSONArray();
         boolean check = false;
         expenses = getArray();
@@ -78,6 +82,7 @@ public class Manager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return check;
     }
 
     /**

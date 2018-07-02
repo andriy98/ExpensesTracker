@@ -39,7 +39,7 @@ public class Menu {
         Pattern pattern = Pattern.compile(" ");
         try {
             while (true) {
-                System.out.print(">");
+                System.out.print("> ");
                 String[] values = pattern.split(scanner.nextLine());
                 if (values[0].equals("")) {
                     continue;
@@ -73,15 +73,15 @@ public class Menu {
                                         name = name.trim();
                                     }
                                     manager.addExpense(date, amount, currency, name);
-                                    parser.getList();
+                                    parser.printList();
                                 }
                             }
                             break;
                         case "list":
-                            parser.getList();
+                            parser.printList();
                             break;
                         case "clear":
-                            if (values.length < 2) {
+                            if (values.length != 2) {
                                 System.out.println("Invalid \"clear\" command !");
                                 System.out.println("Syntax: clear [date(\"yyyy-mm-dd\")]");
                             } else {
@@ -90,12 +90,21 @@ public class Menu {
                                     System.out.println("Entered date is incorrect ! (Format: \"yyyy-mm-dd\")");
                                 } else {
                                     manager.deleteExpenseByDate(date);
-                                    parser.getList();
+                                    parser.printList();
                                 }
                             }
                             break;
                         case "total":
-                            exchanger.exchange();
+                            if (values.length != 2) {
+                                System.out.println("Invalid \"total\" command !");
+                                System.out.println("Syntax: total [currency]");
+                            } else {
+                                if (!values[1].matches("^[-A-Z]+") || values[1].length() != 3) {
+                                    System.out.println("Entered currency is incorrect ! (Should have 3 uppercase letters !)");
+                                } else {
+                                    exchanger.exchange(values[1]);
+                                }
+                            }
                             break;
                         case "help":
                             showHelp();
@@ -125,7 +134,7 @@ public class Menu {
     }
 
     private void showHelp() {
-        System.out.println("Available commands:" +
+        System.out.println("\nAvailable commands:" +
                 "\n1. add - adds expense entry to the list of user expenses ;" +
                 "\nSyntax: add [date(\"yyyy-mm-dd\")] [amount_of_money] [currency] [name_of_product]" +
                 "\n2. list - shows the list of all expenses sorted by date ;" +
